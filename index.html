@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Gallery</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <nav class="bg-gray-800 p-4 sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">🎥 Movie Gallery</h1>
+      <ul class="flex space-x-4">
+        <li><button id="all" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">All</button></li>
+        <li><button id="hollywood" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">Hollywood</button></li>
+        <li><button id="bollywood" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">Bollywood</button></li>
+      </ul>
+      <div class="relative">
+        <input id="search" placeholder="Search movies..." class="p-2 pl-10 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500 transition" type="text">
+        <svg class="absolute h-6 w-6 top-1/2 left-3 -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 2a8 8 0 105.292 14.708l4.29 4.29 1.414-1.414-4.29-4.29A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z"></path>
+        </svg>
+      </div>
+    </div>
+  </nav>
+
+  <div id="movie" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 container mx-auto"></div>
+
+  <script>
+    let movies = [];
+    axios.get("./movie_data.json").then((response) => {
+      movies = response.data;
+      displayMovies(movies);
+    }).catch((error) => {
+      console.error("Error fetching data: ", error);
+    });
+
+    function displayMovies(filteredMovies) {
+      const movieContainer = $("#movie");
+      movieContainer.empty();
+      filteredMovies.forEach((movie) => {
+        const myhtml = `
+        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-gray-800 transform hover:scale-105 transition duration-300">
+          <img class="w-full h-56 object-cover" src="${movie.poster}" alt="${movie.name}">
+          <div class="p-4">
+            <h2 class="text-lg font-semibold mb-2">${movie.name}</h2>
+            <p class="text-gray-400 text-sm mb-4">${movie.description || "A captivating movie you don't want to miss."}</p>
+            <div class="flex space-x-2">
+              ${(movie.genres || []).map(genre => `<span class="bg-blue-500 text-white py-1 px-3 rounded-full text-xs font-semibold">${genre}</span>`).join('')}
+            </div>
+          </div>
+        </div>`;
+        movieContainer.append(myhtml);
+      });
+    }
+
+    $("#all").click(() => displayMovies(movies));
+    $("#hollywood").click(() => {
+      const hollywoodMovies = movies.filter(movie => movie.type === 'Hollywood');
+      displayMovies(hollywoodMovies);
+    });
+    $("#bollywood").click(() => {
+      const bollywoodMovies = movies.filter(movie => movie.type === 'Bollywood');
+      displayMovies(bollywoodMovies);
+    });
+    $("#search").keyup(function(){
+      const search = $(this).val().toLowerCase();
+      const filteredMovies = movies.filter(movie => movie.name.toLowerCase().includes(search));
+      displayMovies(filteredMovies);
+    });
+  </script>
+</body>
+</html>
