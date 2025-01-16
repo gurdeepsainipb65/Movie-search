@@ -16,15 +16,15 @@
 </head>
 <body class="bg-gray-900 text-white">
   <nav class="bg-gray-800 p-4 sticky top-0 z-50 shadow-lg">
-    <div class="container mx-auto flex flex-wrap sm:flex-nowrap justify-between items-center space-y-4 sm:space-y-0">
+    <div class="container mx-auto flex flex-wrap lg:flex-nowrap justify-between items-center space-y-4 lg:space-y-0">
       <h1 class="text-xl font-bold">🎥 Movie Gallery</h1>
-      <ul class="flex flex-wrap justify-center sm:justify-end space-x-2 sm:space-x-4">
+      <ul class="flex flex-wrap justify-center lg:justify-end space-x-2 lg:space-x-4">
         <li><button id="all" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">All</button></li>
         <li><button id="hollywood" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">Hollywood</button></li>
         <li><button id="bollywood" class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded transition">Bollywood</button></li>
       </ul>
-      <div class="relative w-full sm:w-auto">
-        <input id="search" placeholder="Search movies..." class="p-2 pl-10 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500 transition w-full sm:w-64" type="text">
+      <div class="relative w-full lg:w-auto">
+        <input id="search" placeholder="Search movies..." class="p-2 pl-10 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500 transition w-full lg:w-64" type="text">
         <svg class="absolute h-6 w-6 top-1/2 left-3 -translate-y-1/2 text-gray-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M10 2a8 8 0 105.292 14.708l4.29 4.29 1.414-1.414-4.29-4.29A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z"></path>
         </svg>
@@ -32,7 +32,7 @@
     </div>
   </nav>
 
-  <div id="movie" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 container mx-auto"></div>
+  <div id="movie" class="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 container mx-auto"></div>
 
   <script>
     let movies = [];
@@ -48,11 +48,11 @@
       movieContainer.empty();
       filteredMovies.forEach((movie) => {
         const myhtml = `
-        <div class="max-w-sm mx-auto rounded-lg overflow-hidden shadow-lg bg-gray-800 transform hover:scale-105 transition duration-300">
+        <div class="max-w-lg mx-auto rounded-lg overflow-hidden shadow-lg bg-gray-800 transform hover:scale-105 transition duration-300">
           <img class="w-full h-56 object-cover" src="${movie.poster}" alt="${movie.name}">
           <div class="p-4">
             <h2 class="text-lg font-semibold mb-2">${movie.name}</h2>
-            <p class="text-gray-400 text-sm mb-4">${movie.description || "A captivating movie you don't want to miss."}</p>
+            <p class="text-gray-400 text-lg mb-4">${movie.description || "A captivating movie you don't want to miss."}</p>
             <div class="flex flex-wrap space-x-2">
               ${(movie.genres || []).map(genre => `<span class="bg-blue-500 text-white py-1 px-3 rounded-full text-xs font-semibold">${genre}</span>`).join('')}
             </div>
